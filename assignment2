@@ -1,0 +1,102 @@
+////1 Example of bind function on browser, we must be able to change the object on click
+
+    //<button id="newButnbind">Click me</button>  //HTML body
+
+      // Create an object with a method
+        const user = {
+            name: "Annie",
+        };
+
+        var onclick = function () { alert("The name is " + this.name) };
+        // Get a reference to the button
+        const button = document.getElementById('newButnbind');
+
+        // Bind the onclick method to the button click event    
+        button.addEventListener('click',this.onclick.bind(user));
+ 
+//2 Create object without protoype and the inherit it futher
+// Create an object without a prototype
+const user = Object.create(null);
+
+user.name = "fruit";
+user.show = function () {
+    console.log("This is a(an) " + this.name);
+};
+
+// Create a new object that inherits from user
+const derivedUser = Object.create(user);
+
+// Add properties to the derivedUser
+derivedUser.name = "apple";
+derivedUser.showeat = function () {
+    console.log("That is an " + this.name);
+};
+
+// output
+user.show();           // Output: This is a fruit
+derivedUser.show();        // Output: This is a apple
+derivedUser.showeat(); // Output: That is a apple
+
+//3 create a function to populate user details.
+//  func - populateDetail prints Adress and accepts a callBackFunction which prints Name, Age and Topic
+function populateDetails(userId, callbackFunction) {
+
+    const userDetails = {
+        name: "Annie",
+        age: 25,
+        address: "San Jose",
+        topic: "JavaScript",
+    };
+
+    // Call the callback function 
+    callbackFunction(userDetails);
+}
+
+// Callback function to print Name, Age, and Topic
+function printUserDetails(userDetails) {
+    console.log("Name: " + userDetails.name);
+    console.log("Age: " + userDetails.age);
+    console.log("Topic: " + userDetails.topic);
+}
+
+// Callback function to print Address
+function printAddress(userDetails) {
+    console.log("Address: " + userDetails.address);
+}
+
+// populate detail:
+populateDetails(1, printAddress); // Populates and prints only the address
+populateDetails(1, printUserDetails); // Populates and prints Name, Age, and Topic
+
+//4 Javascript currying is achieved by returning functions from functions. Here, the outer function (print)
+//  supplies the printing to be used while the returned function allows the caller to supply the name of the printer.
+function print(printing) {
+    return function (sentence) {
+        console.log(`${printing}: ${sentence}`);
+    };
+}
+
+// Create a curried function
+const printToConsole = print("Greeting");
+
+// Use the curried function
+printToConsole("Happy Holidays!"); 
+
+////5 Create Two objects UserDetail (Properties should be  Name, Age, Street)and UserAddress(Name, Street, City, ZipCode), merge both of them in to UserDetail.
+// Create UserDetail object
+let userDetail = {
+    Name: "Annie",
+    Age: 25,
+    Street: "red street"
+};
+
+// Create userAddress object
+const userAddress = {
+    Name: "Joe",
+    Street: "blue street",
+    City: "San Jose",
+    ZipCode: "12345"
+};
+
+userDetail = Object.assign(userDetail, userDetail, userAddress)
+console.log(userDetail)
